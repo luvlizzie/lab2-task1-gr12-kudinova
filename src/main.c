@@ -58,25 +58,65 @@ void print_array(int array[], int size) {
 }
 
 /*
- * Main function for testing fill_array_random and print_array
+ * Function: count_palindromes
+ * ----------------------------
+ *   array: array to process
+ *   size: size of the array
+ *   
+ *   returns: number of palindrome numbers in the array
  */
-int main() {
-		// Тест is_palindrome
-		int test_numbers[] = {121, 123, 454, 789, 999, 12321};
-		int test_size = 6;
+int count_palindromes(int array[], int size) {
+		int count = 0;
 
-		printf("Testing is_palindrome function:\n");
-		for (int i = 0; i < test_size; i++) {
-				printf("%d is %s\n", 
-							 test_numbers[i], 
-							 is_palindrome(test_numbers[i]) ? "palindrome" : "not palindrome");
+		for (int i = 0; i < size; i++) {
+				if (is_palindrome(array[i])) {
+						count++;
+				}
 		}
 
-		// Тест fill_array_random и print_array
-		printf("\nTesting array functions:\n");
-		int array[10];
-		fill_array_random(array, 10);
-		print_array(array, 10);
+		return count;
+}
+
+/*
+ * Main function
+ */
+int main(int argc, char *argv[]) {
+		// Check command line arguments
+		if (argc != 2) {
+				printf("Usage: %s <array_size>\n", argv[0]);
+				printf("Example: %s 10\n", argv[0]);
+				return 1;
+		}
+
+		// Get array size from command line
+		int size = atoi(argv[1]);
+
+		if (size <= 0) {
+				printf("Error: array size must be positive\n");
+				return 1;
+		}
+
+		if (size > 100) {
+				printf("Error: array size too large (max 100)\n");
+				return 1;
+		}
+
+		// Initialize random seed
+		srand(time(NULL));
+
+		// Create and fill array
+		int array[100];  // maximum size 100
+		fill_array_random(array, size);
+
+		// Print original array
+		printf("Original ");
+		print_array(array, size);
+
+		// Count palindromes
+		int palindrome_count = count_palindromes(array, size);
+
+		// Print result
+		printf("Number of palindrome numbers: %d\n", palindrome_count);
 
 		return 0;
 }
